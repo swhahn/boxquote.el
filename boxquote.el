@@ -218,12 +218,12 @@ boxquote is found."
            (re-bottom (concat "^" (regexp-quote boxquote-bottom-corner)
                               (regexp-quote boxquote-top-and-tail)))
            (points
-            (flet ((find-box-end (re &optional back)
-                     (save-excursion
-                       (when (if back
-                                 (search-backward-regexp re nil t)
-                               (search-forward-regexp re nil t))
-                         (point)))))
+            (cl-flet ((find-box-end (re &optional back)
+                                    (save-excursion
+                                      (when (if back
+                                                (search-backward-regexp re nil t)
+                                              (search-forward-regexp re nil t))
+                                        (point)))))
               (cond ((looking-at re-top)
                      (cons (point) (find-box-end re-bottom)))
                     ((looking-at re-left)
@@ -294,12 +294,12 @@ be formatted using `boxquote-title-format'."
   (interactive "r")
   (save-excursion
     (save-restriction
-      (flet ((bol-at-p (n)
-               (setf (point) n)
-               (bolp))
-             (insert-corner (corner pre-break)
-               (insert (concat (if pre-break "\n" "")
-                               corner boxquote-top-and-tail "\n"))))
+      (cl-flet ((bol-at-p (n)
+                          (setf (point) n)
+                          (bolp))
+                (insert-corner (corner pre-break)
+                               (insert (concat (if pre-break "\n" "")
+                                               corner boxquote-top-and-tail "\n"))))
         (let ((break-start (not (bol-at-p start)))
               (break-end   (not (bol-at-p end))))
           (narrow-to-region start end)
